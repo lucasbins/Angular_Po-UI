@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ListaInventarioComponent } from './lista-inventario/lista-inventario.component';
+import { NovoInventarioComponent } from './novo-inventario/novo-inventario.component';
 
 const routes: Routes = [
-  {path: 'table', loadChildren: () => import('./table/table.module').then(m => m.TableModule)}
+  {path: '', component: ListaInventarioComponent},
+  {path: 'novoInventario', component: NovoInventarioComponent}
 ];
 
 @NgModule({

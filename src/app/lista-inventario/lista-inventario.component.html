@@ -1,0 +1,15 @@
+<po-page-default p-title="Inventário">
+  <div class="po-row">
+    <po-button p-label="Adicionar" p-icon="po-icon-plus" routerLink="/novoInventario"> </po-button>
+    <po-search></po-search>
+  </div>
+
+  <po-table
+  [p-items]="items"
+  p-sort="true"
+  [p-columns]="columns"
+  ></po-table>
+  <div class="po-grid-cell-center">
+    <po-button p-label="Carregar mais" (p-click)="onClick()"> </po-button>
+  </div>
+</po-page-default>

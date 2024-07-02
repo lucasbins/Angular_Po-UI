@@ -6,17 +6,25 @@ import { AppComponent } from './app.component';
 import { PoModule } from '@po-ui/ng-components';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { ListaInventarioComponent } from './lista-inventario/lista-inventario.component';
+import { NovoInventarioComponent } from './novo-inventario/novo-inventario.component';
+import { PoStorageModule } from '@po-ui/ng-storage';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ListaInventarioComponent,
+    NovoInventarioComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PoModule,
     HttpClientModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    PoStorageModule.forRoot({
+      driverOrder: ['localstorage']
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

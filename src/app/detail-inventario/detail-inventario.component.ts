@@ -1,6 +1,6 @@
 import { PoStorageService } from '@po-ui/ng-storage';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PoDynamicFormComponent, PoDynamicFormField, PoModalAction, PoModalComponent, PoTableColumn } from '@po-ui/ng-components';
 
 interface inventario {
@@ -34,13 +34,15 @@ export class DetailInventarioComponent implements OnInit{
 
   newItem = {}
 
+  listaInventario: Array<any> = []
+
   poStorageService = new PoStorageService
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
-  listaInventario: Array<any> = []
 
   fieldsInventario: Array<PoDynamicFormField> = [
     {
@@ -114,17 +116,25 @@ export class DetailInventarioComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')
-    this.poStorageService.get('inventario').then((res: Array<any>) =>{
+    this.id = this.activatedRoute.snapshot.paramMap.get('id')
+    this.poStorageService.getItemByField('inventario', 'id', this.id ).then(inv => this.inventario = inv)
+    /* this.poStorageService.get('inventario').then((res: Array<any>) =>{
       this.inventario = res.find((inv) => inv.id == this.id)
       console.log(this.inventario)
-    })
+    }) */
   }
 
   handleSave() {
-    this.inventario.criacao = new Date()
-    this.poStorageService.appendItemToArray('inventario', this.inventario).then(() => {
-      console.log(this.inventario)
+    this.poStorageService.get('inventario').then((res: Array<any>) => {
+      this.listaInventario = res.map((inv) => {
+        if(inv.id === this.id){
+          return this.inventario
+        }
+        return inv
+      })
+      this.poStorageService.set('inventario', this.listaInventario).then(() => {
+        this.router.navigate(['/'])
+      })
     })
   }
 

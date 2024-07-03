@@ -4,6 +4,7 @@ import {
   PoDynamicFormField,
   PoModalAction
 } from '@po-ui/ng-components';
+import { Router } from '@angular/router';
 import { PoStorageService } from '@po-ui/ng-storage';
 import { v4 as uuid } from 'uuid';
 
@@ -25,6 +26,11 @@ export class NovoInventarioComponent {
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
   @ViewChild('dynamicForm', { static: true }) poForm!: PoDynamicFormComponent
   @ViewChild('dynamicFormItem', { static: true }) poFormItem!: PoDynamicFormComponent
+
+  constructor(
+    private router: Router
+  ) { }
+
 
   poStorageService = new PoStorageService
 
@@ -110,7 +116,7 @@ export class NovoInventarioComponent {
   handleSave() {
     this.newInventario.criacao = new Date()
     this.poStorageService.appendItemToArray('inventario', this.newInventario).then(() => {
-      console.log(this.newInventario)
+      this.router.navigate(['/'])
     })
   }
 

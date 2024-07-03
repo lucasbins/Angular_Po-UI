@@ -1,16 +1,17 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { PoTableColumn, PoTableAction } from '@po-ui/ng-components';
 import { PoStorageService } from '@po-ui/ng-storage';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-inventario',
   templateUrl: './lista-inventario.component.html',
   styleUrls: ['./lista-inventario.component.css']
 })
-export class ListaInventarioComponent implements AfterViewInit {
+export class ListaInventarioComponent implements OnInit {
   constructor(
-    private router : Router
+    private router : Router,
+    private route: ActivatedRoute
   ) {}
 
   items: Array<any> = []
@@ -26,7 +27,13 @@ export class ListaInventarioComponent implements AfterViewInit {
   }
 
   handleDelete(e: any){
-    console.log(e)
+    this.poStorageService.removeItemFromArray('inventario', 'id', e.id).then(() => {
+      this.atualiza()
+    })
+  }
+
+  atualiza() {
+    window.location.reload()
   }
 
   poTableActions: Array<PoTableAction> = [
@@ -42,6 +49,7 @@ export class ListaInventarioComponent implements AfterViewInit {
     }
   ]
 
+
   columns: Array<PoTableColumn> = [
     { property: 'id', label: 'ID' },
     { property: 'criacao', label: 'Criação', type: 'date', format: 'dd/MM/yyyy' },
@@ -49,7 +57,9 @@ export class ListaInventarioComponent implements AfterViewInit {
     { property: 'responsavel', label: 'Responsável' },
   ]
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.poStorageService.get('inventario').then((res) => this.items = res)
+    console.log('atualizou')
   }
+
 }

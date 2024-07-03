@@ -2,9 +2,9 @@
 
   <po-dynamic-form #dynamicForm [p-fields]="fieldsInventario" [p-value]="newInventario">
   </po-dynamic-form>
-  <po-button p-label="Adicionar item" p-icon="po-icon-plus" class="po-pull-right" (p-click)="modal.open()"></po-button>
+  <po-button p-label="Adicionar item" p-icon="po-icon-plus" class="po-pull-right" (p-click)="openModal()"></po-button>
 
-  <po-table [p-items]="items" p-sort="true" [p-columns]="columns"></po-table>
+  <po-table [p-items]="newInventario.items" p-sort="true" [p-columns]="columns"></po-table>
 
   <po-modal #modal p-title="Adicionar Item" [p-primary-action]=confirm>
     <po-dynamic-form #dynamicFormItem [p-fields]="fieldsItemsInventario" [p-value]="newItem">

@@ -5,6 +5,15 @@ import {
   PoModalAction
 } from '@po-ui/ng-components';
 import { PoStorageService } from '@po-ui/ng-storage';
+import { v4 as uuid } from 'uuid';
+
+interface inventario {
+  id: String,
+  responsavel: string,
+  deposito: string,
+  criacao: Date,
+  items: Array<any>
+}
 
 @Component({
   selector: 'app-novo-inventario',
@@ -14,12 +23,18 @@ import { PoStorageService } from '@po-ui/ng-storage';
 
 export class NovoInventarioComponent {
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
-  @ViewChild('dynamicForm', { static: true}) poForm!: PoDynamicFormComponent
-  @ViewChild('dynamicFormItem', { static: true}) poFormItem!: PoDynamicFormComponent
+  @ViewChild('dynamicForm', { static: true }) poForm!: PoDynamicFormComponent
+  @ViewChild('dynamicFormItem', { static: true }) poFormItem!: PoDynamicFormComponent
 
   poStorageService = new PoStorageService
 
-  newInventario = []
+  newInventario: inventario = {
+    id: uuid(),
+    responsavel: '',
+    deposito: '',
+    criacao: new Date(),
+    items: []
+  }
   newItem = {}
 
   fieldsInventario: Array<PoDynamicFormField> = [
@@ -70,27 +85,31 @@ export class NovoInventarioComponent {
     }
   ]
 
-  items: Array<any> = []
-
   confirm: PoModalAction = {
     action: () => {
-      this.items.push(this.newItem)
+      this.newInventario.items.push(this.newItem)
       this.closeModal()
     },
     label: 'Adicionar Item',
   }
 
+  openModal() {
+    this.poFormItem.form.reset()
+    this.poModal.open()
+  }
+
   closeModal() {
     this.newItem = {}
-    this.poModal.close();
+    this.poModal.close()
   }
 
   handleCancel() {
     this.poForm.form.reset()
   }
 
-  handleSave(){
-    this.poStorageService.appendArrayToArray('inventario', this.newInventario).then(() => {
+  handleSave() {
+    this.newInventario.criacao = new Date()
+    this.poStorageService.appendItemToArray('inventario', this.newInventario).then(() => {
       console.log(this.newInventario)
     })
   }

@@ -9,12 +9,14 @@ import { RouterModule } from '@angular/router';
 import { ListaInventarioComponent } from './lista-inventario/lista-inventario.component';
 import { NovoInventarioComponent } from './novo-inventario/novo-inventario.component';
 import { PoStorageModule } from '@po-ui/ng-storage';
+import { DetailInventarioComponent } from './detail-inventario/detail-inventario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListaInventarioComponent,
-    NovoInventarioComponent
+    NovoInventarioComponent,
+    DetailInventarioComponent
   ],
   imports: [
     BrowserModule,

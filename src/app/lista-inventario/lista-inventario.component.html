@@ -11,8 +11,7 @@
   [p-hide-table-search]="false"
   p-actions-right="true"
   [p-actions]="poTableActions"
+  (p-show-more)="columns"
+  p-show-more-disabled="true"
   ></po-table>
-  <div class="po-grid-cell-center">
-    <po-button p-label="Carregar mais" (p-click)="onClick()"> </po-button>
-  </div>
 </po-page-default>

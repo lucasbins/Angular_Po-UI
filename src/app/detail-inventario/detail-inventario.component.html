@@ -1,9 +1,9 @@
-<po-page-default p-title="Novo Inventário">
+<po-page-default p-title="Editar Inventário">
 
-  <po-dynamic-form #dynamicForm [p-fields]="fieldsInventario" [p-value]="newInventario">
+  <po-dynamic-form #dynamicForm [p-fields]="fieldsInventario" [p-value]="inventario">
   </po-dynamic-form>
 
-  <po-table [p-items]="newInventario.items" p-sort="true" [p-columns]="columns" p-striped="true"
+  <po-table [p-items]="inventario.items" p-sort="true" [p-columns]="columns" p-striped="true"
     [p-hide-table-search]="false">
   </po-table>
   <div class="po-grid btn-add">

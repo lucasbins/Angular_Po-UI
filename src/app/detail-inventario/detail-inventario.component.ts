@@ -1,11 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { PoDynamicFormComponent, PoModalComponent, PoTableColumn } from '@po-ui/ng-components';
-import {
-  PoDynamicFormField,
-  PoModalAction
-} from '@po-ui/ng-components';
 import { PoStorageService } from '@po-ui/ng-storage';
-import { v4 as uuid } from 'uuid';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PoDynamicFormComponent, PoDynamicFormField, PoModalAction, PoModalComponent, PoTableColumn } from '@po-ui/ng-components';
 
 interface inventario {
   id: String,
@@ -16,26 +12,35 @@ interface inventario {
 }
 
 @Component({
-  selector: 'app-novo-inventario',
-  templateUrl: './novo-inventario.component.html',
-  styleUrls: ['./novo-inventario.component.css']
+  selector: 'app-detail-inventario',
+  templateUrl: './detail-inventario.component.html',
+  styleUrls: ['./detail-inventario.component.css']
 })
 
-export class NovoInventarioComponent {
+export class DetailInventarioComponent implements OnInit{
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
   @ViewChild('dynamicForm', { static: true }) poForm!: PoDynamicFormComponent
   @ViewChild('dynamicFormItem', { static: true }) poFormItem!: PoDynamicFormComponent
 
-  poStorageService = new PoStorageService
+  id: string | null = '';
 
-  newInventario: inventario = {
-    id: uuid(),
+  inventario: inventario = {
+    id: '',
     responsavel: '',
     deposito: '',
     criacao: new Date(),
     items: []
   }
+
   newItem = {}
+
+  poStorageService = new PoStorageService
+
+  constructor(
+    private route: ActivatedRoute,
+  ) {}
+
+  listaInventario: Array<any> = []
 
   fieldsInventario: Array<PoDynamicFormField> = [
     {
@@ -87,7 +92,7 @@ export class NovoInventarioComponent {
 
   confirm: PoModalAction = {
     action: () => {
-      this.newInventario.items.push(this.newItem)
+      this.inventario?.items.push(this.newItem)
       this.closeModal()
     },
     label: 'Adicionar Item',
@@ -107,10 +112,19 @@ export class NovoInventarioComponent {
     this.poForm.form.reset()
   }
 
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id')
+    this.poStorageService.get('inventario').then((res: Array<any>) =>{
+      this.inventario = res.find((inv) => inv.id == this.id)
+      console.log(this.inventario)
+    })
+  }
+
   handleSave() {
-    this.newInventario.criacao = new Date()
-    this.poStorageService.appendItemToArray('inventario', this.newInventario).then(() => {
-      console.log(this.newInventario)
+    this.inventario.criacao = new Date()
+    this.poStorageService.appendItemToArray('inventario', this.inventario).then(() => {
+      console.log(this.inventario)
     })
   }
 
